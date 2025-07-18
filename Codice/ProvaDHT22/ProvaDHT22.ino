@@ -10,6 +10,7 @@ int TempMin=10000;
 int HumMax=0;
 int HumMin=10000;
 bool aperto=0;
+String status;
 #include <SPI.h>
  
 void setup()   {
@@ -65,6 +66,7 @@ InvDisp("TempMax.val",TempMax);
 InvDisp("HumMax.val",HumMax);
 InvDisp("TempMin.val",TempMin);
 InvDisp("HumMin.val",HumMin);
+InvDisptxt("status.txt",status);
 if (aperturaVal >= 0 && aperturaVal <= 100) {
   InvDisp("aper.val", aperturaVal);
 }
@@ -103,6 +105,7 @@ digitalWrite(4,0);
 digitalWrite(7,0);
 digitalWrite(8,0);
 aperto=1;
+status="aperte";
 }
 void chiudi(){
 digitalWrite(7,0);
@@ -114,6 +117,7 @@ digitalWrite(4,0);
 digitalWrite(7,0);
 digitalWrite(8,0);
 aperto=0;
+status="chiuse";
 }
 
 
