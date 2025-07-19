@@ -10,6 +10,7 @@ int TempMin=10000;
 int HumMax=0;
 int HumMin=10000;
 bool aperto=0;
+bool enable = 0;
 String status;
 #include <SPI.h>
  
@@ -40,6 +41,27 @@ void loop()
       aperturaVal = a;
       chiusuraVal = c;
     }
+// Rimuovi tutti i caratteri 0xFF
+String cleanedInput = "";
+for (int i = 0; i < input.length(); i++) {
+  if (input[i] != 0xFF) {
+    cleanedInput += input[i];
+  }
+}
+
+if (strstr(buffer, "enable") != NULL) {
+  enable = true;
+}
+if (strstr(buffer, "noenable") != NULL) {
+  enable = false;
+}
+
+if (strstr(buffer, "apri") != NULL) {
+  apri();
+}
+if (strstr(buffer, "chiudi") != NULL) {
+  chiudi();
+}
 
 
 if(int(h*100)<HumMin){
@@ -54,10 +76,10 @@ if(int(t*100)>TempMax){
 if(int(t*100)<TempMin){
   TempMin=t*100;
 }
-if((int(t*100)<chiusuraVal*100)&&aperto==1){
+if((int(t*100)<chiusuraVal*100)&&aperto==1 && enable==0){
   chiudi();
 }
-if((int(t*100)>aperturaVal*100)&&aperto==0){
+if((int(t*100)>aperturaVal*100)&&aperto==0&&enable==0){
   apri();
 }
 InvDisp("Temp.val",int(t * 100));
@@ -66,7 +88,7 @@ InvDisp("TempMax.val",TempMax);
 InvDisp("HumMax.val",HumMax);
 InvDisp("TempMin.val",TempMin);
 InvDisp("HumMin.val",HumMin);
-InvDisptxt("status.txt",status);
+InvDisptxt("status.txt", "\"" + status + "\"");
 if (aperturaVal >= 0 && aperturaVal <= 100) {
   InvDisp("aper.val", aperturaVal);
 }
