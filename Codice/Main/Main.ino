@@ -55,6 +55,10 @@ if (strstr(buffer, "enable") != NULL) {
 if (strstr(buffer, "noenable") != NULL) {
   enable = false;
 }
+if (strstr(buffer, "restemp") != NULL) {
+  TempMax=0;
+  TempMin=10000;
+}
 
 if (strstr(buffer, "apri") != NULL) {
   apri();
