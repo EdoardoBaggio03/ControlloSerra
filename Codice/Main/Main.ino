@@ -1,6 +1,6 @@
 #include "DHT.h"
-#define DHTPIN 2        // Pin a cui è collegato il sensore
-#define DHTTYPE DHT22    // Indicazione del modello del sensore
+#define DHTPIN 2        // Pin DHT22
+#define DHTTYPE DHT22    
 DHT dht(DHTPIN, DHTTYPE);
 char buffer[50];
 uint8_t aperturaVal = 0;
@@ -17,25 +17,23 @@ String status;
 void setup()   {
   Serial.begin(9600);
   dht.begin();
-  pinMode(4, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
+  pinMode(4, OUTPUT); //Enable Motore
+  pinMode(7, OUTPUT); //pin Apertura
+  pinMode(8, OUTPUT); //pin Chiusura
   digitalWrite(4, LOW);
-  chiudi();
+  chiudi(); //chiusura iniziale
 
 }
  
 void loop()
 {
     float t = dht.readTemperature();
-  float h = dht.readHumidity();
-
+    float h = dht.readHumidity();
 
     String input = Serial.readStringUntil('\n');  // legge fino a newline
-    input.trim(); // rimuove spazi extra
-
+    input.trim();
     input.toCharArray(buffer, sizeof(buffer));
-
+// Lettura seriale
     int a, c;
     if (sscanf(buffer, "apertura=%dchiusura=%d", &a, &c) == 2) {
       aperturaVal = a;
@@ -103,7 +101,7 @@ if (chiusuraVal >= 0 && chiusuraVal <= 100) {
 
 }
 
-void InvDisp(String varName, int value) {
+void InvDisp(String varName, int value) { //funzione invia dati a display
   Serial.print(varName);
   Serial.print("=");
   Serial.print(value);
@@ -112,7 +110,7 @@ void InvDisp(String varName, int value) {
   Serial.write(0xff);
   delay(30);
 }
-void InvDisptxt(String varName, String value) {
+void InvDisptxt(String varName, String value) { //funzione invia stringhe a display
   Serial.print(varName);
   Serial.print("=");
   Serial.print(value);
@@ -121,7 +119,7 @@ void InvDisptxt(String varName, String value) {
   Serial.write(0xff);
   delay(30);
 }
-void apri(){
+void apri(){ // apertura con delay
   digitalWrite(7,1);
 digitalWrite(8,0);
 delay(200);
@@ -133,7 +131,7 @@ digitalWrite(8,0);
 aperto=1;
 status="aperte";
 }
-void chiudi(){
+void chiudi(){ // chiusura con delay 
 digitalWrite(7,0);
 digitalWrite(8,1);
 delay(200);
